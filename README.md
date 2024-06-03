@@ -2,7 +2,7 @@
 
 ## Authentification
 The application allow you to have and account. 
-The authentification is token-based (JWT) and is based on 3 routes: 
+The authentification is token-based (JWT) and is composed of 3 routes: 
 1. POST /auth/signup to create an account
 2. POST /auth/login to login
 3. GET /auth/verify to verify you're logged
@@ -20,4 +20,4 @@ The following checks are done:
 - The password guidelines are followd (at least 6 characters and contain at least one number, one lowercase and one uppercase letter)
 - Dupplicate users (already existing email)
 
-If everything is OK, your data are saved with a hashed version of your password. 
+If everything is OK, your data are stored with a hashed version of your password. 
