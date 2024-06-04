@@ -23,4 +23,8 @@ app.use("/auth", autRoutes);
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
+const { authError } = require("./error-handling/authError");
+app.use(authError);
+
+
 module.exports = app;

@@ -17,5 +17,6 @@ module.exports = (app) => {
           message: "Internal server error. Check the server console",
         });
     }
+
   });
 };
