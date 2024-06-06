@@ -12,10 +12,10 @@ let responseSent = false; //Allow us to stop  the code in different promesses if
 
 // POST /auth/signup  - Creates a new user in the database
 router.post("/signup", (req, res, next) => {
-  const { email, password, firstName, lastName } = req.body;
+  const { email, password, firstName, lastName, userName } = req.body;
 
   // Check if the email, password, first name and last name are provided as an empty string
-  if (email === "" || password === "" || firstName === "" || lastName === "") {
+  if (email === "" || password === "" || userName === "" ) {
     return next("empty-field");
   }
 
@@ -44,15 +44,15 @@ router.post("/signup", (req, res, next) => {
 
     // Create a new user in the database
     // We return a pending promise, which allows us to chain another `then`
-    User.create({ email, password: hashedPassword, firstName, lastName }).then(
+    User.create({ email, password: hashedPassword, firstName, lastName, userName }).then(
       (createdUser) => {
         // Deconstruct the newly created user object to omit the password
         // We should never expose passwords publicly
         if (responseSent) return;
-        const { email, firstName, lastName, _id } = createdUser;
+        const { email, firstName, lastName, userName, _id } = createdUser;
 
         // Create a new object that doesn't expose the password
-        const user = { email, firstName, lastName, _id };
+        const user = { email, firstName, lastName, userName, _id };
 
         // Send a json response containing the user object
         res.status(201).json({ user: user });
