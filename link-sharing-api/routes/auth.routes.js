@@ -10,26 +10,34 @@ const router = express.Router();
 const saltRounds = 10;
 let responseSent = false; //Allow us to stop  the code in different promesses if an error is sent
 
-// POST /auth/signup  - Creates a new user in the database
-router.post("/signup", (req, res, next) => {
-  const { email, password, firstName, lastName, userName } = req.body;
-
-  // Check if the email, password, first name and last name are provided as an empty string
-  if (email === "" || password === "" || userName === "" ) {
-    return next("empty-field");
-  }
-
+const emailValidation = (email) => {
   // Use regex to validate the email format
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   if (!emailRegex.test(email)) {
     return next("email-not-valid");
   }
-
+}
+const passwordValidation = (password) => {
   // Use regex to validate the password format
   const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
   if (!passwordRegex.test(password)) {
     return next("password-format");
   }
+}
+// POST /auth/signup  - Creates a new user in the database
+router.post("/signup", (req, res, next) => {
+  const { email, password, firstName, lastName, userName } = req.body;
+
+  // Check if the email, password, first name and last name are provided as an empty string
+  if (email === "" || password === "" || userName === "") {
+    return next("empty-field");
+  }
+
+
+  emailValidation(email)
+
+
+  passwordValidation(password)
 
   // Check the users collection if a user with the same email already exists
   User.findOne({ email }).then((foundUser) => {
@@ -123,5 +131,42 @@ router.get('/verify', isAuthenticated, (req, res, next) => {       // <== CREATE
   // previously set as the token payload
   res.status(200).json(req.payload);
 });
+router.put('/update/:id', isAuthenticated, (req, res, next) => {
+  /*   const userId = req.params.id;
+   */
+  const { email, userName, password } = req.body;
+  const userId = req.payload._id;
+  console.log(userId)
+  if (!email || !userName) {
+    return res.status(400).json({ message: "Email or  username is missing  " });
+  }
+  emailValidation(email)
+  const updateData = { email, userName };
 
+  // if password is provided 
+  if (password) {
+    passwordValidation(password)
+    const salt = bcrypt.genSaltSync(saltRounds);
+    updateData.password = bcrypt.hashSync(password, salt);
+  }
+  User.findByIdAndUpdate(userId, updateData, { new: true })
+
+    .then((updatedUser) => {
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found." });
+      }
+
+      const { email, userName, _id } = updatedUser;
+      const user = { email, userName, _id };
+      res.status(200).json({ user: user });
+    })
+    .catch((err) =>
+      res
+        .status(500)
+        .json({ message: "Internal Server Error", err: err.message })
+    );
+
+})
 module.exports = router;
+
+

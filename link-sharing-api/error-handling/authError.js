@@ -22,6 +22,11 @@ function authError(err, req, res, next) {
         .status(400)
         .json({ message: "Provide email, password, first name and last name" });
       break;
+    case "empty-update-fields":
+      res
+        .status(400)
+        .json({ message: "Provide Email , first name and last name" });
+      break;
     default:
       res.status("generic error...");
       break;
