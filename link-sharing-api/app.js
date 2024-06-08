@@ -13,10 +13,17 @@ const express = require("express");
 const cors = require('cors');
 
 const app = express();
+////////////////////////////////CORS/////////////////////////////////
+const cors = require('cors');
+const corsOptions = {
+    origin: 'http://localhost:5173', // Allow requests from this origin
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+    optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+};
+app.use(cors(corsOptions));
 
-app.use(cors());
-
-
+////////////////////////////////CORS///////////////////////////////
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
 require("./config")(app);
 
