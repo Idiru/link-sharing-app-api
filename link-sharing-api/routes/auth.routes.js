@@ -134,14 +134,14 @@ router.get('/verify', isAuthenticated, (req, res, next) => {       // <== CREATE
 router.put('/update/:id', isAuthenticated, (req, res, next) => {
   /*   const userId = req.params.id;
    */
-  const { email, firstName, lastName, password } = req.body;
+  const { email, firstName, lastName, password, userName } = req.body;
   const userId = req.payload._id;
   console.log(userId)
-  if (!email || !firstName || !lastName) {
+  if (!email || !firstName || !lastName || !usertName) {
     return res.status(400).json({ message: " please fill the  missing  fields " });
   }
   emailValidation(email)
-  const updateData = { email, firstName, lastName };
+  const updateData = { email, firstName, lastName, userName };
 
   // if password is provided 
   if (password) {
