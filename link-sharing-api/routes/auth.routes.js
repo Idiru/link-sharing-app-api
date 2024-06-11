@@ -26,10 +26,10 @@ const passwordValidation = (password) => {
 }
 // POST /auth/signup  - Creates a new user in the database
 router.post("/signup", (req, res, next) => {
-  const { email, password, firstName, lastName, userName } = req.body;
+  const { email, password, firstName, lastName, } = req.body;
 
   // Check if the email, password, first name and last name are provided as an empty string
-  if (email === "" || password === "" || userName === "") {
+  if (email === "" || password === "" || firstName === "" || firstName === "") {
     return next("empty-field");
   }
 
@@ -134,14 +134,14 @@ router.get('/verify', isAuthenticated, (req, res, next) => {       // <== CREATE
 router.put('/update/:id', isAuthenticated, (req, res, next) => {
   /*   const userId = req.params.id;
    */
-  const { email, userName, password } = req.body;
+  const { email, firstName, lastName, password } = req.body;
   const userId = req.payload._id;
   console.log(userId)
-  if (!email || !userName) {
-    return res.status(400).json({ message: "Email or  username is missing  " });
+  if (!email || !firstName || !lastName) {
+    return res.status(400).json({ message: " please fill the  missing  fields " });
   }
   emailValidation(email)
-  const updateData = { email, userName };
+  const updateData = { email, firstName, lastName };
 
   // if password is provided 
   if (password) {
@@ -156,8 +156,8 @@ router.put('/update/:id', isAuthenticated, (req, res, next) => {
         return res.status(404).json({ message: "User not found." });
       }
 
-      const { email, userName, _id } = updatedUser;
-      const user = { email, userName, _id };
+      const { email, firstName, lastName, _id, userName } = updatedUser;
+      const user = { email, firstName, lastName, userName, _id };
       res.status(200).json({ user: user });
     })
     .catch((err) =>
