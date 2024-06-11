@@ -167,6 +167,23 @@ router.put('/update/:id', isAuthenticated, (req, res, next) => {
     );
 
 })
+// GET /users/:id - Fetches one user info
+router.get("/users/:id", isAuthenticated, (req, res, next) => {
+  const userId = req.params.id;
+
+  User.findById(userId)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ message: "User not found." });
+      }
+
+      const { email, firstName, lastName, userName, _id } = user;
+      const userInfo = { email, firstName, lastName, userName, _id };
+
+      res.status(200).json({ user: userInfo });
+    })
+    .catch((err) => res.status(500).json({ message: "Internal Server Error", err: err.message }));
+});
 module.exports = router;
 
 
