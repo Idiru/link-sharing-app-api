@@ -111,7 +111,7 @@ router.post("/login", (req, res, next) => {
         // Send the token as the response
         res.status(200).json({ authToken: authToken });
       } else {
-        res.status(401).json({ message: "Unable to authenticate the user" });
+        res.status(401).json({ message: "Invalid username or password." });
       }
     })
     .catch((err) =>
@@ -134,10 +134,10 @@ router.get('/verify', isAuthenticated, (req, res, next) => {       // <== CREATE
 router.put('/update/:id', isAuthenticated, (req, res, next) => {
   /*   const userId = req.params.id;
    */
-  const { email, firstName, lastName, password, userName } = req.body;
+  const { email, firstName, lastName, userName, password } = req.body;
   const userId = req.payload._id;
   console.log(userId)
-  if (!email || !firstName || !lastName || !usertName) {
+  if (!email || !firstName || !lastName || !userName) {
     return res.status(400).json({ message: " please fill the  missing  fields " });
   }
   emailValidation(email)
