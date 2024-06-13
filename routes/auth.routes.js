@@ -131,42 +131,6 @@ router.get('/verify', isAuthenticated, (req, res, next) => {       // <== CREATE
   // previously set as the token payload
   res.status(200).json(req.payload);
 });
-router.put('/update/:id', isAuthenticated, (req, res, next) => {
-  /*   const userId = req.params.id;
-   */
-  const { email, firstName, lastName, userName, password } = req.body;
-  const userId = req.payload._id;
-  console.log(userId)
-  if (!email || !firstName || !lastName || !userName) {
-    return res.status(400).json({ message: " please fill the  missing  fields " });
-  }
-  emailValidation(email)
-  const updateData = { email, firstName, lastName, userName };
-
-  // if password is provided 
-  if (password) {
-    passwordValidation(password)
-    const salt = bcrypt.genSaltSync(saltRounds);
-    updateData.password = bcrypt.hashSync(password, salt);
-  }
-  User.findByIdAndUpdate(userId, updateData, { new: true })
-
-    .then((updatedUser) => {
-      if (!updatedUser) {
-        return res.status(404).json({ message: "User not found." });
-      }
-
-      const { email, firstName, lastName, _id, userName } = updatedUser;
-      const user = { email, firstName, lastName, userName, _id };
-      res.status(200).json({ user: user });
-    })
-    .catch((err) =>
-      res
-        .status(500)
-        .json({ message: "Internal Server Error", err: err.message })
-    );
-
-})
 // GET /users/:id - Fetches one user info
 router.get("/users/:id", isAuthenticated, (req, res, next) => {
   const userId = req.params.id;
@@ -184,6 +148,62 @@ router.get("/users/:id", isAuthenticated, (req, res, next) => {
     })
     .catch((err) => res.status(500).json({ message: "Internal Server Error", err: err.message }));
 });
+
+// UPDATE USER INFO 
+router.put('/update/:id', isAuthenticated, async (req, res) => {
+  const { email, firstName, lastName, userName, currentPassword, newPassword } = req.body;
+  const userId = req.payload._id;
+
+  if (!email || !firstName || !lastName || !userName) {
+    return res.status(400).json({ message: "Please fill the missing fields" });
+  }
+
+
+  try {
+    emailValidation(email);
+
+    const updateData = { email, firstName, lastName, userName };
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // If passwords are provided
+    if (currentPassword && newPassword) {
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: "Current password is incorrect." });
+      }
+
+      passwordValidation(newPassword);
+      const salt = await bcrypt.genSalt(saltRounds);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+      updateData.password = hashedPassword;
+    }
+    else if (currentPassword && !newPassword) {
+      return res.status(400).json({ message: "please provide the new password." });
+
+    }
+    else if (!currentPassword && newPassword) {
+      return res.status(400).json({ message: "please provide the old password." });
+
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    const { email: updatedEmail, firstName: updatedFirstName, lastName: updatedLastName, _id, userName: updatedUserName } = updatedUser;
+    const responseUser = { email: updatedEmail, firstName: updatedFirstName, lastName: updatedLastName, userName: updatedUserName, _id };
+    res.status(200).json({ user: responseUser });
+
+  } catch (err) {
+    res.status(500).json({ message: "Internal Server Error", err: err.message });
+  }
+});
+
 module.exports = router;
-
-
