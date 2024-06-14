@@ -26,7 +26,7 @@ const passwordValidation = (password) => {
 }
 // POST /auth/signup  - Creates a new user in the database
 router.post("/signup", (req, res, next) => {
-  const { email, password, firstName, lastName, } = req.body;
+  const { email, password, firstName, lastName, userName } = req.body;
 
   // Check if the email, password, first name and last name are provided as an empty string
   if (email === "" || password === "" || firstName === "" || firstName === "") {
