@@ -15,7 +15,7 @@ const app = express();
 ////////////////////////////////CORS/////////////////////////////////
 const cors = require('cors');
 const corsOptions = {
-    origin: ["http://localhost:5173", process.env.ORIGIN],
+    origin: ["http://localhost:5174", process.env.ORIGIN],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
     optionsSuccessStatus: 200 // Some legacy browsers choke on 204
@@ -30,10 +30,12 @@ require("./config")(app);
 const indexRoutes = require("./routes/index.routes");
 const autRoutes = require("./routes/auth.routes");
 const userRoutes = require("./routes/user.routes");
+const contentRoutes = require("./routes/content.routes");
 
 app.use("/api", indexRoutes);
 app.use("/auth", autRoutes);
 app.use("/user", userRoutes);
+app.use("/content", contentRoutes);
 
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
