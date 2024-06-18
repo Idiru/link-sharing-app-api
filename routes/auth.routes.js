@@ -3,11 +3,14 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
 const { authError } = require("../error-handling/authError");
+const upload = require('../middleware/multer.middlware');
 
 const { isAuthenticated } = require("./../middleware/jwt.middleware");
 
 const router = express.Router();
 const saltRounds = 10;
+
+
 let responseSent = false; //Allow us to stop  the code in different promesses if an error is sent
 
 const emailValidation = (email) => {
@@ -26,7 +29,7 @@ const passwordValidation = (password) => {
 }
 // POST /auth/signup  - Creates a new user in the database
 router.post("/signup", (req, res, next) => {
-  const { email, password, firstName, lastName, } = req.body;
+  const { email, password, firstName, lastName, userName } = req.body;
 
   // Check if the email, password, first name and last name are provided as an empty string
   if (email === "" || password === "" || firstName === "" || firstName === "") {
@@ -141,8 +144,8 @@ router.get("/users/:id", isAuthenticated, (req, res, next) => {
         return res.status(404).json({ message: "User not found." });
       }
 
-      const { email, firstName, lastName, userName, _id } = user;
-      const userInfo = { email, firstName, lastName, userName, _id };
+      const { email, firstName, lastName, userName, _id, profileImage } = user;
+      const userInfo = { email, firstName, lastName, userName, _id, profileImage };
 
       res.status(200).json({ user: userInfo });
     })
@@ -150,14 +153,13 @@ router.get("/users/:id", isAuthenticated, (req, res, next) => {
 });
 
 // UPDATE USER INFO 
-router.put('/update/:id', isAuthenticated, async (req, res) => {
+router.put('/update/:id', isAuthenticated, upload.single('profileImage'), async (req, res) => {
   const { email, firstName, lastName, userName, currentPassword, newPassword } = req.body;
   const userId = req.payload._id;
 
   if (!email || !firstName || !lastName || !userName) {
     return res.status(400).json({ message: "Please fill the missing fields" });
   }
-
 
   try {
     emailValidation(email);
@@ -170,7 +172,7 @@ router.put('/update/:id', isAuthenticated, async (req, res) => {
       return res.status(404).json({ message: "User not found." });
     }
 
-    // If passwords are provided
+    // Handle password update
     if (currentPassword && newPassword) {
       const isMatch = await bcrypt.compare(currentPassword, user.password);
       if (!isMatch) {
@@ -181,14 +183,15 @@ router.put('/update/:id', isAuthenticated, async (req, res) => {
       const salt = await bcrypt.genSalt(saltRounds);
       const hashedPassword = await bcrypt.hash(newPassword, salt);
       updateData.password = hashedPassword;
+    } else if (currentPassword && !newPassword) {
+      return res.status(400).json({ message: "Please provide the new password." });
+    } else if (!currentPassword && newPassword) {
+      return res.status(400).json({ message: "Please provide the old password." });
     }
-    else if (currentPassword && !newPassword) {
-      return res.status(400).json({ message: "please provide the new password." });
 
-    }
-    else if (!currentPassword && newPassword) {
-      return res.status(400).json({ message: "please provide the old password." });
-
+    // Handle profile image update
+    if (req.file) {
+      updateData.profileImage = req.file.path;
     }
 
     const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
@@ -197,8 +200,8 @@ router.put('/update/:id', isAuthenticated, async (req, res) => {
       return res.status(404).json({ message: "User not found." });
     }
 
-    const { email: updatedEmail, firstName: updatedFirstName, lastName: updatedLastName, _id, userName: updatedUserName } = updatedUser;
-    const responseUser = { email: updatedEmail, firstName: updatedFirstName, lastName: updatedLastName, userName: updatedUserName, _id };
+    const { email: updatedEmail, firstName: updatedFirstName, lastName: updatedLastName, _id, userName: updatedUserName, profileImage } = updatedUser;
+    const responseUser = { email: updatedEmail, firstName: updatedFirstName, lastName: updatedLastName, userName: updatedUserName, profileImage, _id };
     res.status(200).json({ user: responseUser });
 
   } catch (err) {
