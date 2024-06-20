@@ -6,6 +6,10 @@ const contentSchema = new Schema(
             type: String,
             required: true
         },
+        title: {
+            type: String,
+            required: true
+        },
 
         platform: {
             type: String,

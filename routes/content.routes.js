@@ -14,7 +14,7 @@ router.post("/create", isAuthenticated, (req, res) => {
     Content.create({ block, platform, url, user: userId }) // Include user ID
         .then((newContent) => {
 
-            User.findByIdAndUpdate(userId, 
+            User.findByIdAndUpdate(userId,
                 { $push: { content: newContent._id } }, // Use $push to add new content ID
                 { new: true, safe: true, upsert: true }) // Ensure creation if not exists, and return updated document
                 .then(user => {
@@ -25,7 +25,7 @@ router.post("/create", isAuthenticated, (req, res) => {
                     console.error('Error updating user:', err);
                     res.status(500).json({ message: "Failed to update user with new content" });
                 });
-            
+
         })
         .catch((err) =>
             res.status(500).json({ message: "Failed to create content" })
