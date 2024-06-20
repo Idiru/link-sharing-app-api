@@ -139,13 +139,14 @@ router.get("/users/:id", isAuthenticated, (req, res, next) => {
   const userId = req.params.id;
 
   User.findById(userId)
+    .populate('content')
     .then((user) => {
       if (!user) {
         return res.status(404).json({ message: "User not found." });
       }
 
-      const { email, firstName, lastName, userName, _id, profileImage } = user;
-      const userInfo = { email, firstName, lastName, userName, _id, profileImage };
+      const { email, firstName, lastName, userName, _id, profileImage, content } = user;
+      const userInfo = { email, firstName, lastName, userName, _id, profileImage, content};
 
       res.status(200).json({ user: userInfo });
     })

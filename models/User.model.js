@@ -28,8 +28,8 @@ const userSchema = new Schema(
     },
     profileImage: {
       type: String
-
-    }
+    },
+    content: [{ type: Schema.Types.ObjectId, ref: 'Content' }]
 
   },
   {

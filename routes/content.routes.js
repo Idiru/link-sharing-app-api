@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
 const Content = require("../models/Content.model");
+const User = require("../models/User.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 
@@ -12,7 +13,19 @@ router.post("/create", isAuthenticated, (req, res) => {
     // Create a new entry inside the content collection
     Content.create({ block, platform, url, user: userId }) // Include user ID
         .then((newContent) => {
-            res.status(201).json(newContent);
+
+            User.findByIdAndUpdate(userId, 
+                { $push: { content: newContent._id } }, // Use $push to add new content ID
+                { new: true, safe: true, upsert: true }) // Ensure creation if not exists, and return updated document
+                .then(user => {
+                    console.log('Updated user with new content:', user);
+                    res.status(201).json(newContent);
+                })
+                .catch(err => {
+                    console.error('Error updating user:', err);
+                    res.status(500).json({ message: "Failed to update user with new content" });
+                });
+            
         })
         .catch((err) =>
             res.status(500).json({ message: "Failed to create content" })
@@ -37,6 +50,7 @@ router.get("/:contentId", isAuthenticated, (req, res) => {
         })
         .catch(error => res.status(500).json({ message: "Error getting the content" }));
 });
+
 
 // PUT  /:contentID
 router.put("/:contentId", isAuthenticated, (req, res) => {
