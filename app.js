@@ -15,7 +15,7 @@ const app = express();
 ////////////////////////////////CORS/////////////////////////////////
 const cors = require("cors");
 const corsOptions = {
-  origin: ["http://localhost:5173", process.env.ORIGIN],
+  origin: process.env.ORIGIN,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
   allowedHeaders: [
     "Origin",
