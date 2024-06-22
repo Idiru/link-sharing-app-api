@@ -7,11 +7,11 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 // POST  /create
 router.post("/create", isAuthenticated, (req, res) => {
-    const { block, platform, url } = req.body;
+    const { block, platform, url, title } = req.body;
     const userId = req.payload._id; // Extract user ID from payload
     console.log(userId)
     // Create a new entry inside the content collection
-    Content.create({ block, platform, url, user: userId }) // Include user ID
+    Content.create({ block, platform, url, title, user: userId }) // Include user ID
         .then((newContent) => {
 
             User.findByIdAndUpdate(userId,
