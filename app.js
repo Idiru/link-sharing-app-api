@@ -15,7 +15,7 @@ const app = express();
 ////////////////////////////////CORS/////////////////////////////////
 const cors = require("cors");
 const corsOptions = {
-  origin: process.env.ORIGIN,
+  origin: "https://link-sharing-app-front-beryl.vercel.app",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
   allowedHeaders: [
     "Origin",
