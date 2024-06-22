@@ -105,4 +105,14 @@ router.get("/users/:userId", isAuthenticated, (req, res) => {
             res.status(500).json({ message: "Failed to retrieve user content" })
         );
 });
+router.put('/users/:userId/publish', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        await Content.updateMany({ user: userId }, { isPublished: true });
+        res.status(200).json({ message: 'Content published successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error publishing content', error });
+    }
+});
+
 module.exports = router;

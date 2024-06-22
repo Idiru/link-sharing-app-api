@@ -19,6 +19,11 @@ const contentSchema = new Schema(
             type: String,
             required: false
         },
+        isPublished: {
+            type: Boolean,
+            default: false
+
+        },
         user:
             { type: Schema.Types.ObjectId, ref: 'User', required: true }
     },
