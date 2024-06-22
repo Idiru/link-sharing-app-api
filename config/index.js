@@ -9,6 +9,25 @@ const logger = require("morgan");
 // https://www.npmjs.com/package/cookie-parser
 const cookieParser = require("cookie-parser");
 
+// ℹ️ Needed to accept from requests from 'the outside'. CORS stands for cross origin resource sharing
+// unless the request if from the same domain, by default express wont accept POST requests
+
+const cors = require("cors");
+const corsOptions = {
+  origin: "https://link-sharing-app-front-beryl.vercel.app",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+  allowedHeaders: [
+    "Origin",
+    "X-Requested-With",
+    "Content-Type",
+    "Accept",
+    "Authorization",
+    "Cache-Control",
+  ],
+  optionsSuccessStatus: 200,
+};
+
+
 // Middleware configuration
 module.exports = (app) => {
   // Because this is a server that will accept requests from outside and it will be hosted ona server with a `proxy`, express needs to know that it should trust that setting.
@@ -24,4 +43,5 @@ module.exports = (app) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
+  app.use(cors(corsOptions));
 };

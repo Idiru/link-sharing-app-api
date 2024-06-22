@@ -12,22 +12,6 @@ require("./db");
 const express = require("express");
 
 const app = express();
-////////////////////////////////CORS/////////////////////////////////
-const cors = require("cors");
-const corsOptions = {
-  origin: "https://link-sharing-app-front-beryl.vercel.app",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-  allowedHeaders: [
-    "Origin",
-    "X-Requested-With",
-    "Content-Type",
-    "Accept",
-    "Authorization",
-    "Cache-Control",
-  ],
-  optionsSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
 
 ////////////////////////////////CORS///////////////////////////////
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
