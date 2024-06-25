@@ -18,7 +18,7 @@ const cors = require('cors');
 const corsOptions = {
     origin: ["http://localhost:5173", process.env.ORIGIN],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control, Access-Control-Allow-Origin',
+    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control',
     optionsSuccessStatus: 200 // Some legacy browsers choke on 204
 };
 app.use(cors(corsOptions));
