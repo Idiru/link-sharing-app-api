@@ -11,22 +11,9 @@ const cookieParser = require("cookie-parser");
 
 // ℹ️ Needed to accept from requests from 'the outside'. CORS stands for cross origin resource sharing
 // unless the request if from the same domain, by default express wont accept POST requests
-
 const cors = require("cors");
-const corsOptions = {
-  origin: "https://link-sharing-app-front-git-link-builder-front-idirus-projects.vercel.app",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-  allowedHeaders: [
-    "Origin",
-    "X-Requested-With",
-    "Content-Type",
-    "Accept",
-    "Authorization",
-    "Cache-Control",
-  ],
-  optionsSuccessStatus: 200,
-};
 
+const FRONTEND_URL = process.env.ORIGIN || "http://localhost:3000";
 
 // Middleware configuration
 module.exports = (app) => {
@@ -35,6 +22,11 @@ module.exports = (app) => {
   app.set("trust proxy", 1);
 
   // controls a very specific header to pass headers from the frontend
+  app.use(
+    cors({
+      origin: [FRONTEND_URL]
+    })
+  );
 
   // In development environment the app logs
   app.use(logger("dev"));
@@ -43,5 +35,4 @@ module.exports = (app) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
-  app.use(cors(corsOptions));
 };
