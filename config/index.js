@@ -14,7 +14,7 @@ const cookieParser = require("cookie-parser");
 
 const cors = require("cors");
 const corsOptions = {
-  origin: "https://link-sharing-app-front-git-link-builder-front-idirus-projects.vercel.app/login",
+  origin: "https://link-sharing-app-front-git-link-builder-front-idirus-projects.vercel.app",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
   allowedHeaders: [
     "Origin",
