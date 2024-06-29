@@ -18,7 +18,7 @@ The authentification is token-based (JWT) and is composed of 3 routes:
 2. POST /auth/login to login
 3. GET /auth/verify to verify you're logged
 
-### Signup
+## Signup
 
 To signup, you have to provide these data:
 
@@ -36,7 +36,7 @@ The following checks are done:
 
 If everything is OK, your data are stored with a hashed version of your password.
 
-### Content
+## Content
 
 ### Overview
 
