@@ -9,7 +9,7 @@ function authError(err, req, res, next) {
       res
         .status(400)
         .json({
-          message: "Password must have at least 6 characters and contain at least one number, one lowercase and one uppercase letter.",
+          message: "Password must have at least 8 characters and contain at least one number, one lowercase and one uppercase letter.",
         });
       break;
     case "email-not-valid":
