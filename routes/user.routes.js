@@ -21,23 +21,22 @@ router.get("/username", isAuthenticated, (req, res) => {
       res.json({ username: user.userName });
     })
     .catch(error => res.status(500).json(error));
+
 });
-// GET /users/username/:username - Get user by username
-router.get("/users/username/:username", isAuthenticated, (req, res) => {
-  const { username } = req.params;
 
-  if (!username) {
-    return res.status(400).json({ message: "Username is required" });
-  }
+// GET /devlinks/:username - Get user data by username
+router.get('/devlinks/:userName', (req, res) => {
+  const userName = req.params.userName;
 
-  User.findOne({ userName: username })
-    .then((user) => {
+  User.findOne({ userName: userName })
+    .populate('content')
+    .then(user => {
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({ message: 'User not found' });
       }
-      res.json({ user });
+      res.json(user);
     })
-    .catch((error) => res.status(500).json(error));
+    .catch(error => res.status(500).json(error));
 });
 
 
