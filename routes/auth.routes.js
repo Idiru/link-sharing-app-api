@@ -146,7 +146,7 @@ router.get("/users/:id", isAuthenticated, (req, res, next) => {
       }
 
       const { email, firstName, lastName, userName, _id, profileImage, content } = user;
-      const userInfo = { email, firstName, lastName, userName, _id, profileImage, content};
+      const userInfo = { email, firstName, lastName, userName, _id, profileImage, content };
 
       res.status(200).json({ user: userInfo });
     })
@@ -158,7 +158,7 @@ router.put('/update/:id', isAuthenticated, upload.single('profileImage'), async 
   const { email, firstName, lastName, userName, currentPassword, newPassword } = req.body;
   const userId = req.payload._id;
 
-  if (!email || !firstName || !lastName || !userName) {
+  if (!email || !userName) {
     return res.status(400).json({ message: "Please fill the missing fields" });
   }
 
