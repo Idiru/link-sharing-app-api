@@ -200,7 +200,6 @@ router.put(
     }
 
     try {
-      emailValidation(email);
 
       const updateData = { email, firstName, lastName, userName };
 
