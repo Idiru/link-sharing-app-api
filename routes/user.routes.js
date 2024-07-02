@@ -2,6 +2,8 @@ const router = require("express").Router();
 const mongoose = require("mongoose");
 const User = require("../models/User.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
+// cloudinary route
+const fileUploader = require("../config/cloudinary.config");
 
 // GET /user/username  - Get username
 router.get("/username", isAuthenticated, (req, res) => {
@@ -22,6 +24,20 @@ router.get("/username", isAuthenticated, (req, res) => {
     })
     .catch(error => res.status(500).json(error));
 
+});
+// POST "user/upload" => Route that receives the image, sends it to Cloudinary via the fileUploader and returns the image URL
+router.post("/upload/", fileUploader.single("profileImage"), (req, res, next) => {
+  // console.log("file is: ", req.file)
+
+  if (!req.file) {
+    next(new Error("No file uploaded!"));
+    return;
+  }
+
+  // Get the URL of the uploaded file and send it as a response.
+  // 'fileUrl' can be any name, just make sure you remember to use the same when accessing it on the frontend
+
+  res.json({ fileUrl: req.file.path });
 });
 
 // GET /devlinks/:username - Get user data by username

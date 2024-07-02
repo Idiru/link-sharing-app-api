@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
 const { authError } = require("../error-handling/authError");
-const upload = require("../middleware/multer.middlware");
 
 
 const { isAuthenticated } = require("./../middleware/jwt.middleware");
@@ -182,7 +181,6 @@ router.get("/users/:id", isAuthenticated, (req, res) => {
 router.put(
   "/update/:id",
   isAuthenticated,
-  upload.single("profileImage"),
   async (req, res) => {
     const {
       email,
@@ -194,7 +192,7 @@ router.put(
     } = req.body;
     const userId = req.payload._id;
 
-    if (!email || !firstName || !lastName || !userName) {
+    if (!email || !userName) {
       console.log("Missing fields")
       return res
         .status(400)

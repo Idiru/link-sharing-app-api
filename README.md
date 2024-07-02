@@ -1,23 +1,27 @@
 # link-sharing-app-api
 
 ## Global
+
 ### Environment variables
+
 - `PORT`: To define the port you want to use.
 - `ORIGIN`: To define the front url (to avoid CORS issues)
 - `TOKEN_SECRET`: To uncode the JWT tokens
 - `MONGODB_URI`: To connect to your DB
 
 ## Signup
+
 ### Overview
-enables users to signup to the platform by filling all mandatories data. It features a form with username, email, password, repeat password inputs. 
+
+enables users to signup to the platform by filling all mandatories data. It features a form with username, email, password, repeat password inputs.
 
 ### Core functionalities
+
 To signup, you have to provide these data:
 
 - email
 - password
-- firstName
-- lastName
+- userName
 
 The following checks are done:
 
@@ -29,20 +33,27 @@ The following checks are done:
 If everything is OK, your data are stored with a hashed version of your password.
 
 ## Authentification
+
 ### Overview
-The application allow you to have and account. The authentification is token-based (JWT) and is composed of 3 routes. 
+
+The application allow you to have and account. The authentification is token-based (JWT) and is composed of 3 routes.
 
 ### Core functionalities
+
 1. POST /auth/signup to create an account
 2. POST /auth/login to login
 3. GET /auth/verify to verify you're logged
+4. PUT /auth/:id/update to update your information
 
 ## Content
+
 ### Overview
+
 The content only allows the user to create a new link block for the moment.
 The endpoints start by `/content`.
 
 ### Core functionalities
+
 - <u>**Add content:**</u>
   To create a new link, you have to provide these data:
 
@@ -68,5 +79,5 @@ The endpoints start by `/content`.
 
   The endpoint is the same than the "Get content" above.
 
-In case the id is needed, we extract it from the payload of the request. 
-The content is linked to a user, a dedicated column exists inside the user table of the DB. 
+In case the id is needed, we extract it from the payload of the request.
+The content is linked to a user, a dedicated column exists inside the user table of the DB.
