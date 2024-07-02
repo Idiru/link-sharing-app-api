@@ -140,7 +140,7 @@ router.get("/verify", isAuthenticated, (req, res) => {
 // GET /users/:id - Fetches one user info
 router.get("/users/:id", isAuthenticated, (req, res) => {
   const userId = req.params.id;
-
+  console.log(userId)
   User.findById(userId)
     .populate("content")
     .then((user) => {
@@ -189,87 +189,89 @@ router.put(
       userName,
       currentPassword,
       newPassword,
+      profileImage // Add profileImage to destructuring
     } = req.body;
     const userId = req.payload._id;
 
+    // Validate required fields
     if (!email || !userName) {
-      console.log("Missing fields")
-      return res
-        .status(400)
-        .json({ message: "Please fill the missing fields" });
+      console.log("Missing fields");
+      return res.status(400).json({ message: "Please fill the missing fields" });
     }
 
     try {
-
+      // Prepare update data
       const updateData = { email, firstName, lastName, userName };
 
+      // Retrieve the user by ID
       const user = await User.findById(userId);
 
+      // Check if user exists
       if (!user) {
-        console.log("User not found")
+        console.log("User not found");
         return res.status(404).json({ message: "User not found." });
       }
 
-      // Handle password update
+      // Handle password update if provided
       if (currentPassword && newPassword) {
         const isMatch = await bcrypt.compare(currentPassword, user.password);
         if (!isMatch) {
-          console.log("Incorrect current password")
-          return res
-            .status(400)
-            .json({ message: "Current password is incorrect." });
+          console.log("Incorrect current password");
+          return res.status(400).json({ message: "Current password is incorrect." });
         }
 
         const salt = await bcrypt.genSalt(saltRounds);
         const hashedPassword = await bcrypt.hash(newPassword, salt);
         updateData.password = hashedPassword;
       } else if (currentPassword && !newPassword) {
-        console.log("Empty new password")
-        return res
-          .status(400)
-          .json({ message: "Please provide the new password." });
+        console.log("Empty new password");
+        return res.status(400).json({ message: "Please provide the new password." });
       } else if (!currentPassword && newPassword) {
-        console.log("Empty old password")
-        return res
-          .status(400)
-          .json({ message: "Please provide the old password." });
+        console.log("Empty old password");
+        return res.status(400).json({ message: "Please provide the old password." });
       }
 
-      // Handle profile image update
-      if (req.file) {
-        updateData.profileImage = req.file.path;
+      // Update profile image if provided
+      if (profileImage) {
+        updateData.profileImage = profileImage;
       }
 
+      // Perform the update operation
       const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
         new: true,
       });
 
+      // Check if user was updated successfully
       if (!updatedUser) {
-        console.log("User not found")
+        console.log("User not found");
         return res.status(404).json({ message: "User not found." });
       }
 
+      // Prepare response data
       const {
         email: updatedEmail,
         firstName: updatedFirstName,
         lastName: updatedLastName,
         _id,
         userName: updatedUserName,
-        profileImage,
+        profileImage: updatedProfileImage,
       } = updatedUser;
+
       const responseUser = {
         email: updatedEmail,
         firstName: updatedFirstName,
         lastName: updatedLastName,
         userName: updatedUserName,
-        profileImage,
+        profileImage: updatedProfileImage,
         _id,
       };
+
+      // Respond with updated user data
       res.status(200).json({ user: responseUser });
     } catch (err) {
-      res
-        .status(500)
-        .json({ message: "Internal Server Error", err: err.message });
+      // Handle errors
+      console.error("Error updating user:", err);
+      res.status(500).json({ message: "Internal Server Error", err: err.message });
     }
   }
 );

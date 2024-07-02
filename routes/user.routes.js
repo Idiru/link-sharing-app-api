@@ -37,7 +37,7 @@ router.post("/upload/", fileUploader.single("profileImage"), (req, res, next) =>
   // Get the URL of the uploaded file and send it as a response.
   // 'fileUrl' can be any name, just make sure you remember to use the same when accessing it on the frontend
 
-  res.json({ fileUrl: req.file.path });
+  res.json({ profileImage: req.file.path });
 });
 
 // GET /devlinks/:username - Get user data by username
