@@ -2,15 +2,14 @@ const express = require('express');
 const router = express.Router();
 const Click = require('../models/Clicks.model');
 
-// Route to handle a click event
 router.post('/', async (req, res) => {
-    const { contentId, userId } = req.body;
+    const { contentId } = req.body;
 
     try {
         const click = new Click({
-            content: contentId,
-            user: userId // userId is optional
+            content: contentId
         });
+
         await click.save();
 
         res.status(200).json({ message: 'Click recorded' });
