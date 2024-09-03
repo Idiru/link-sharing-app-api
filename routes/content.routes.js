@@ -33,24 +33,21 @@ router.post("/create", isAuthenticated, (req, res) => {
 });
 
 // GET /:contentId - Get content
-router.get("/:contentId", isAuthenticated, (req, res) => {
-  const contentId = req.params.contentId; //Base on the content id, we return the data of this specific content
+router.get("/:contentId", isAuthenticated, (req, res, next) => {
+  const contentId = req.params.contentId;
 
   if (!mongoose.Types.ObjectId.isValid(contentId)) {
-    res.status(400).json({ message: `Specified id is not valid` });
-    return;
+    return next({ status: 400, message: "Specified id is not valid" });
   }
 
   Content.findById(contentId)
     .then((content) => {
       if (!content) {
-        return res.status(404).json({ message: "Content not found" });
+        return next({ status: 404, message: "Content not found" });
       }
       res.json(content);
     })
-    .catch((error) =>
-      res.status(500).json({ message: "Error getting the content" })
-    );
+    .catch((error) => next({ status: 500, message: "Error getting the content", error: error }));
 });
 
 // PUT  /:contentID

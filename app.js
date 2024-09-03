@@ -13,6 +13,7 @@ const express = require("express");
 
 const app = express();
 
+
 ////////////////////////////////CORS/////////////////////////////////
 const cors = require('cors');
 const corsOptions = {
@@ -41,9 +42,9 @@ app.use("/content", contentRoutes);
 app.use("/clicks", clicksRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
-require("./error-handling")(app);
+const errorHandler = require('./middleware/errorHandler');
+app.use('/api/content', contentRoutes);
+app.use(errorHandler);
 
-const { authError } = require("./error-handling/authError");
-app.use(authError);
 
 module.exports = app;
