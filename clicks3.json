@@ -1,0 +1,122 @@
+[
+  {
+    "_id": "668715dba92a0dff730dc7cd",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-01T12:34:56.789Z",
+    "__v": 0
+  },
+  {
+    "_id": "668715eca92a0dff730dc7ce",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-01T13:45:00.123Z",
+    "__v": 0
+  },
+  {
+    "_id": "668715fda92a0dff730dc7cf",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-01T14:56:34.567Z",
+    "__v": 0
+  },
+  {
+    "_id": "6687160ea92a0dff730dc7d0",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-02T16:12:01.234Z",
+    "__v": 0
+  },
+  {
+    "_id": "6687161fa92a0dff730dc7d1",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-02T18:34:56.789Z",
+    "__v": 0
+  },
+  {
+    "_id": "66871630a92a0dff730dc7d2",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-02T20:56:34.567Z",
+    "__v": 0
+  },
+  {
+    "_id": "66871641a92a0dff730dc7d3",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-03T22:12:01.234Z",
+    "__v": 0
+  },
+  {
+    "_id": "66871652a92a0dff730dc7d4",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-03T23:34:56.789Z",
+    "__v": 0
+  },
+  {
+    "_id": "66871663a92a0dff730dc7d5",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-03T01:45:00.123Z",
+    "__v": 0
+  },
+  {
+    "_id": "66871674a92a0dff730dc7d6",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-04T03:56:34.567Z",
+    "__v": 0
+  },
+  {
+    "_id": "66871685a92a0dff730dc7d7",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-04T05:12:01.234Z",
+    "__v": 0
+  },
+  {
+    "_id": "66871696a92a0dff730dc7d8",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-04T06:23:45.678Z",
+    "__v": 0
+  },
+  {
+    "_id": "668716a7a92a0dff730dc7d9",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-05T08:34:56.789Z",
+    "__v": 0
+  },
+  {
+    "_id": "668716b8a92a0dff730dc7da",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-05T10:45:00.123Z",
+    "__v": 0
+  },
+  {
+    "_id": "668716c9a92a0dff730dc7db",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-06T12:56:34.567Z",
+    "__v": 0
+  },
+  {
+    "_id": "668716daa92a0dff730dc7dc",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-06T14:12:01.234Z",
+    "__v": 0
+  },
+  {
+    "_id": "668716eba92a0dff730dc7dd",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-06T16:23:45.678Z",
+    "__v": 0
+  },
+  {
+    "_id": "668716fca92a0dff730dc7de",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-07T18:34:56.789Z",
+    "__v": 0
+  },
+  {
+    "_id": "6687170da92a0dff730dc7df",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-07T20:45:00.123Z",
+    "__v": 0
+  },
+  {
+    "_id": "6687171ea92a0dff730dc7e0",
+    "content": { "$oid": "6684597cd8abd6df4e1e88fb" },
+    "clickTimestamp": "2024-06-08T22:56:34.567Z",
+    "__v": 0
+  }
+]
